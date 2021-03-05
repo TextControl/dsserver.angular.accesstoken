@@ -19,20 +19,26 @@ namespace backendangular.Controllers {
 		[Route("AccessToken")]
 		public async System.Threading.Tasks.Task<ActionResult> AccessTokenAsync() {
 
-			string clientId = "dsserver.EMRWLJAdPpZirYLDNAF0gP7QzQaB8OfH";
-			string clientSecret = "OGC24l8BcjVpc90SHt0gHJhDjtYJP70a";
+			// security credentials
+			string clientId = "";
+			string clientSecret = "";
 
 			string serviceUrl = "https://trial.dsserver.io";
+
 			string ClientCredentials = "client_credentials";
 
 			AccessTokenResponse token;
-
 			HttpClient m_client = new HttpClient();
 
+			// generate the payload
 			var payload = new Dictionary<string, string> {
 				["grant_type"] = ClientCredentials,
 			};
+
+			// token endpoint
 			string requestUri = $"{serviceUrl}/oauth/token";
+
+			// create the request message
 			var tokenRequest = new HttpRequestMessage(HttpMethod.Post, requestUri) {
 				Content = new StringContent(UrlEncode(payload), Encoding.UTF8, "application/x-www-form-urlencoded")
 			};
@@ -43,15 +49,16 @@ namespace backendangular.Controllers {
 			string credentialsB64 = Convert.ToBase64String(credentialsUtf8);
 			tokenRequest.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentialsB64);
 
+			// send the request
 			var tokenResponse = await m_client.SendAsync(tokenRequest);
 
+			// retrieve and return the token
 			var tokenResponseStream = await tokenResponse.Content.ReadAsStringAsync();
-
 			token = JsonConvert.DeserializeObject<AccessTokenResponse>(tokenResponseStream);
 			
 			return Ok(token);
 		}
-
+		
 		public string UrlEncode(Dictionary<string, string> dict) {
 			return string.Join("&", dict.Keys.Select(k => $"{k}={WebUtility.UrlEncode(dict[k])}"));
 		}
