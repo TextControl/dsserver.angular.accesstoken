@@ -20,8 +20,8 @@ namespace backendangular.Controllers {
 		public async System.Threading.Tasks.Task<ActionResult> AccessTokenAsync() {
 
 			// security credentials
-			string clientId = "";
-			string clientSecret = "";
+			string clientId = "dsserver.V3Jy9h5b1hhbwRMrtHYoGCkbaPeVLEEu";
+			string clientSecret = "c0X2dG9uvudmJMRIDruTsi5EadtfL6AM";
 
 			string serviceUrl = "https://trial.dsserver.io";
 
